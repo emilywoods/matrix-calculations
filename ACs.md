@@ -6,7 +6,7 @@ And the user can retry
 
 **Scenario: input matrix size is too large**    
 When the user inputs the NxN matrix size    
-And the value is greater than 250   
+And the value is greater than 10  
 Then an error message is displayed  
 And the user can retry  
 

@@ -5,7 +5,7 @@ class UserCommsHelper
     @stdout.puts "Please in the size of N x N matrix:"
   end
 
-  def self.user_input
+  def self.get_user_input
     @stdin.gets.chomp()
   end
 
@@ -13,8 +13,7 @@ class UserCommsHelper
     @stdout.puts "Please input a series of values for the #{size} x #{size} matrix"
   end
 
-  def self.get_matrix_values(matrix_size_string)
-    matrix_size = matrix_size_string.to_i
+  def self.get_matrix_values(matrix_size)
     matrix_string_array = []
 
     i = 0
