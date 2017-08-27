@@ -1,11 +1,10 @@
-
 class HumanLearningController
 
-  attr_reader :user_comms_helper, :parser, :calculator
+  attr_reader :user_comms_helper, :matrix_parser, :calculator
 
   def initialize(user_comms_helper, parser, calculator)
     @user_comms_helper = user_comms_helper
-    @parser = parser
+    @matrix_parser = matrix_parser
     @calculator = calculator
   end
 
@@ -16,10 +15,8 @@ class HumanLearningController
 
     user_comms_helper.request_matrix_values
     matrix_string = user_comms_helper.get_matrix_values(matrix_size)
-    validate_matrix_values(matrix_string)
 
-
-    matrix = parser.parse(matrix_string)
+    matrix = matrix_parser.parse(matrix_size, matrix_string)
     diagnonal_sum = calculator.calculate(matrix)
 
     user_comms_helper.output_result(diagnonal_sum)
@@ -32,18 +29,6 @@ class HumanLearningController
     raise InvalidMatrixSize unless matrix_size < 11 && matrix_size > 0
     matrix_size
   end
-
-  def validate_matrix_values(matrix_values)
-    raise InvalidMatrixValue if matrix_values == nil || matrix_values == " "
-
-    matrix_values.flat_map do |row|
-      row.split(" ")
-    end
-
-    matrix_values.each do |value|
-      raise InvalidMatrixValue unless value.match(/\d+/)
-    end
-  end
 end
 
 class InvalidMatrixSize < StandardError
@@ -53,9 +38,3 @@ class InvalidMatrixSize < StandardError
   end
 end
 
-class InvalidMatrixValue < StandardError
-  INVALID_MATRIX_VALUE = "Error: invalid matrix value. Input must be a number"
-  def initialize(msg=INVALID_MATRIX_VALUE)
-    super
-  end
-end
