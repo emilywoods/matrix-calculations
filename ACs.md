@@ -10,6 +10,13 @@ And the value is greater than 250
 Then an error message is displayed  
 And the user can retry  
 
+**Scenario: user inputs a blank row**   
+Given the user inputs a valid NxN matrix size   
+When the user inputs values for each row    
+And a row is blank  
+Then an error message is displayed  
+And the user can retry  
+
 **Scenario: input row contains value which is not a (positive/negative) number**    
 Given the user inputs a valid NxN matrix size   
 When the user inputs values for each row    
@@ -28,13 +35,6 @@ And the user can retry
 Given the user inputs a valid NxN matrix size   
 When the user inputs values for each row    
 And a row has too many values   
-Then an error message is displayed  
-And the user can retry  
-
-**Scenario: user inputs a blank row**   
-Given the user inputs a valid NxN matrix size   
-When the user inputs values for each row    
-And a row is blank  
 Then an error message is displayed  
 And the user can retry  
 
