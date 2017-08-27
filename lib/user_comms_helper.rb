@@ -2,15 +2,15 @@
 class UserCommsHelper
 
   def self.request_matrix_size
-    @stdout.puts "Please in the size of N x N matrix:"
+    STDOUT.puts "Please input the size of N x N matrix:"
   end
 
   def self.get_user_input
-    @stdin.gets.chomp()
+    STDIN.gets.chomp()
   end
 
   def self.request_matrix_values(size)
-    @stdout.puts "Please input a series of values for the #{size} x #{size} matrix"
+    STDOUT.puts "Please input a series of values for the #{size} x #{size} matrix"
   end
 
   def self.get_matrix_values(matrix_size)
@@ -33,7 +33,7 @@ class UserCommsHelper
   end
 
   def self.say_thank_you
-    @stdout.puts "Thank you!"
+    STDOUT.puts "Thank you!"
   end
 
 end

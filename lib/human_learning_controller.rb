@@ -2,7 +2,7 @@ class HumanLearningController
 
   attr_reader :user_comms_helper, :matrix_parser, :calculator
 
-  def initialize(user_comms_helper, parser, calculator)
+  def initialize(user_comms_helper, matrix_parser, calculator)
     @user_comms_helper = user_comms_helper
     @matrix_parser = matrix_parser
     @calculator = calculator
@@ -13,13 +13,14 @@ class HumanLearningController
     matrix_size_string = user_comms_helper.get_user_input
     matrix_size = validate_matrix_size(matrix_size_string)
 
-    user_comms_helper.request_matrix_values
+    user_comms_helper.request_matrix_values(matrix_size)
     matrix_string = user_comms_helper.get_matrix_values(matrix_size)
 
     matrix = matrix_parser.parse(matrix_size, matrix_string)
-    diagnonal_sum = calculator.calculate(matrix)
+    diagonal_sum = calculator.calculate_sum(matrix)
 
-    user_comms_helper.output_result(diagnonal_sum)
+    user_comms_helper.output_result(diagonal_sum)
+    user_comms_helper.say_thank_you
   end
 
   private
