@@ -1,4 +1,4 @@
-class HumanLearningController
+class CalculatorController
   attr_reader :user_comms_helper, :calculator
 
   def initialize(user_comms_helper, calculator)

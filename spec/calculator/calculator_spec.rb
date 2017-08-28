@@ -1,5 +1,5 @@
 require 'rspec'
-require './lib/calculator/calculator'
+require '././lib/calculator/calculator'
 
 RSpec.describe 'calculator' do
   subject(:calculator) {Calculator.new}

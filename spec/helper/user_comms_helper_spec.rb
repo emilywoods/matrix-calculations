@@ -1,5 +1,5 @@
 require 'rspec'
-require './lib/helper/user_comms_helper'
+require '././lib/helper/user_comms_helper'
 
 RSpec.describe 'user_comms_helper' do
   subject(:user_comms_helper) { UserCommsHelper }

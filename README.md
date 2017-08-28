@@ -1,4 +1,4 @@
-# Diagonal Sum Calculator
+# Matrix Diagonal Sum Calculator
 
 The calculator requires two inputs from the user:
 1. Matrix size: positive integer in the range 1 - 10
@@ -19,7 +19,7 @@ Acceptance Criteria can be found in `ACs.md`
 
 # Running
 **Executing the program:**      
-`>ruby lib/diagonal_calculator.rb`
+`>ruby lib/matrix_calculator.rb`
 
 User will receive a prompt:
 ```
@@ -47,7 +47,7 @@ Run Rubocop with formatting:
 
 # Areas for improvement
  
- - Tests to include error messages
+ - Tests should include error messages
  
  - Add CI with unit tests and formatting checks to verify successful builds each time a commit
  is pushed to the remote repo
