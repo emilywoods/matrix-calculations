@@ -1,5 +1,4 @@
 class HumanLearningController
-
   attr_reader :user_comms_helper, :calculator
 
   def initialize(user_comms_helper, calculator)
@@ -19,7 +18,4 @@ class HumanLearningController
     user_comms_helper.output_result(diagonal_sum)
     user_comms_helper.say_thank_you
   end
-
 end
-
-
