@@ -5,49 +5,103 @@ RSpec.describe 'user_comms_helper' do
 
   subject(:user_comms_helper) {UserCommsHelper}
 
-  it 'should get the matrix values as a string' do
-    MATRIX_SIZE = 1
+  describe 'get_matrix_size' do
+    it 'should get the matrix size from the console as an int' do
+      allow(STDIN).to receive(:gets).and_return("2")
 
-    allow(STDIN).to receive(:gets).and_return("1")
+      result = user_comms_helper.get_matrix_size
 
-    expect(STDOUT).to receive(:puts)
-    expect(user_comms_helper.get_matrix_values(MATRIX_SIZE)).to eq(["1"])
+      expect(STDIN).to have_received(:gets)
+      expect(result).to eq(2)
+    end
+
+    it 'should raise error if the size input is not a number' do
+      allow(STDIN).to receive(:gets).and_return("B")
+      allow(STDOUT).to receive(:puts)
+
+      expect{user_comms_helper.get_matrix_size}.to raise_error(InvalidMatrixSize)
+    end
+
+    it 'should raise error if the size input is not an integer' do
+      allow(STDIN).to receive(:gets).and_return("4.4")
+      allow(STDOUT).to receive(:puts)
+
+      expect{user_comms_helper.get_matrix_size}.to raise_error(InvalidMatrixSize)
+    end
+
+    it 'raise an error if the size input is less than one' do
+      allow(STDIN).to receive(:gets).and_return("0")
+      allow(STDOUT).to receive(:puts)
+
+      expect{user_comms_helper.get_matrix_size}.to raise_error(InvalidMatrixSize)
+    end
+
+    it 'raise an error if the size input is greater than ten' do
+      allow(STDIN).to receive(:gets).and_return("11")
+      allow(STDOUT).to receive(:puts)
+
+      expect{user_comms_helper.get_matrix_size}.to raise_error(InvalidMatrixSize)
+    end
   end
 
-  it 'should get the matrix values as a string with each row separated' do
-    MATRIX_SIZE_AS_INT = 2
-    allow(STDIN).to receive(:gets).and_return("2 1")
+  describe 'get_matrix_values' do
 
-    expect(STDOUT).to receive(:puts).exactly(MATRIX_SIZE_AS_INT).times
-    expect(user_comms_helper.get_matrix_values(MATRIX_SIZE_AS_INT)).to eq(["2 1", "2 1"])
-  end
+    it 'should raise an error if the row is blank' do
+      allow(STDIN).to receive(:gets).and_return(" ")
+      allow(STDOUT).to receive(:puts)
 
+      expect{user_comms_helper.get_matrix_values(2)}.to raise_error(InvalidMatrixValue)
+    end
 
-  it 'should display an error message when matrix size is not a number' do
-    allow(user_comms_helper).to receive(:get_matrix_size).and_return("Hello")
+    it 'should raise an error if the row is incomplete' do
+      allow(STDIN).to receive(:gets).and_return("1")
+      allow(STDOUT).to receive(:puts)
 
-    expect{human_learning_controller.run_program}.to raise_error(InvalidMatrixSize)
-    expect{human_learning_controller.run_program}.to raise_error.with_message(InvalidMatrixSize::INVALID_MATRIX_SIZE)
-  end
+      expect{user_comms_helper.get_matrix_values(2)}.to raise_error(InvalidMatrixValue)
+    end
 
-  it 'should display an error message when matrix size is not an integer' do
-    allow(user_comms_helper).to receive(:get_matrix_size).and_return("6.6")
+    it 'should raise an error if the row is too long' do
+      allow(STDIN).to receive(:gets).and_return("1 1 1 1")
+      allow(STDOUT).to receive(:puts)
 
-    expect{human_learning_controller.run_program}.to raise_error(InvalidMatrixSize)
-    expect{human_learning_controller.run_program}.to raise_error.with_message(InvalidMatrixSize::INVALID_MATRIX_SIZE)
-  end
+      expect{user_comms_helper.get_matrix_values(2)}.to raise_error(InvalidMatrixValue)
+    end
 
-  it 'should display an error message when matrix size is too large' do
-    allow(user_comms_helper).to receive(:get_matrix_size).and_return("11")
+    it 'should get input values once each row' do
+      allow(STDIN).to receive(:gets).and_return("1 1 1")
+      allow(STDOUT).to receive(:puts)
 
-    expect{human_learning_controller.run_program}.to raise_error(InvalidMatrixSize)
-    expect{human_learning_controller.run_program}.to raise_error.with_message(InvalidMatrixSize::INVALID_MATRIX_SIZE)
-  end
+      user_comms_helper.get_matrix_values(3)
 
-  it 'should display an error message when matrix size is zero' do
-    allow(user_comms_helper).to receive(:get_matrix_size).and_return("0")
+      expect(STDIN).to have_received(:gets).exactly(3).times
+    end
 
-    expect{human_learning_controller.run_program}.to raise_error(InvalidMatrixSize)
-    expect{human_learning_controller.run_program}.to raise_error.with_message(InvalidMatrixSize::INVALID_MATRIX_SIZE)
+    it 'should output the current row to the user' do
+      allow(STDIN).to receive(:gets).and_return("1 1 1")
+      allow(STDOUT).to receive(:puts)
+
+      user_comms_helper.get_matrix_values(3)
+
+      expect(STDOUT).to have_received(:puts).exactly(3).times
+    end
+
+    it 'should retry once if a value is not a digit and raise an error if incorrect input again' do
+      allow(STDIN).to receive(:gets).and_return("1 B 1")
+      allow(STDOUT).to receive(:puts)
+
+      expect{user_comms_helper.get_matrix_values(3)}.to raise_error(InvalidMatrixValue)
+
+      expect(STDOUT).to have_received(:puts).with(user_comms_helper::VALUE_RETRY)
+    end
+
+    it 'should return a matrix of strings if input is valid' do
+      allow(STDIN).to receive(:gets).and_return("1 4")
+      allow(STDOUT).to receive(:puts)
+
+      result = user_comms_helper.get_matrix_values(2)
+
+      expect(result).to eq([["1", "4"], ["1", "4"]])
+    end
+
   end
 end
