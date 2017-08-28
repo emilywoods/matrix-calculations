@@ -15,40 +15,58 @@ RSpec.describe 'human_learning_controller' do
     allow(parser).to receive(:parse)
   end
 
-  it 'should display an error message when matrix size is not a number' do
-    allow(user_comms_helper).to receive(:get_user_input).and_return("Hello")
+  it 'should request matrix size from user' do
+    human_learning_controller.run_program
 
-    expect{human_learning_controller.run_program}.to raise_error(InvalidMatrixSize)
-    expect{human_learning_controller.run_program}.to raise_error.with_message(InvalidMatrixSize::INVALID_MATRIX_SIZE)
+    expect(user_comms_helper).to have_received(:request_matrix_size)
   end
 
-  it 'should display an error message when matrix size is not an integer' do
-    allow(user_comms_helper).to receive(:get_user_input).and_return("6.6")
+  it 'should get matrix size from user' do
+    human_learning_controller.run_program
 
-    expect{human_learning_controller.run_program}.to raise_error(InvalidMatrixSize)
-    expect{human_learning_controller.run_program}.to raise_error.with_message(InvalidMatrixSize::INVALID_MATRIX_SIZE)
+    expect(user_comms_helper).to have_received(:get_matrix_size)
   end
 
-  it 'should display an error message when matrix size is too large' do
-    allow(user_comms_helper).to receive(:get_user_input).and_return("11")
+  it 'should request matrix values from user' do
+    human_learning_controller.run_program
 
-    expect{human_learning_controller.run_program}.to raise_error(InvalidMatrixSize)
-    expect{human_learning_controller.run_program}.to raise_error.with_message(InvalidMatrixSize::INVALID_MATRIX_SIZE)
+    expect(user_comms_helper).to have_received(:request_matrix_values)
   end
 
-  it 'should display an error message when matrix size is zero' do
-    allow(user_comms_helper).to receive(:get_user_input).and_return("0")
+  it 'should get matrix size from user' do
+    human_learning_controller.run_program
 
-    expect{human_learning_controller.run_program}.to raise_error(InvalidMatrixSize)
-    expect{human_learning_controller.run_program}.to raise_error.with_message(InvalidMatrixSize::INVALID_MATRIX_SIZE)
+    expect(user_comms_helper).to have_received(:get_matrix_values)
   end
 
-  it 'should calculate the sum of the diagonals when the input is valid' do
-    allow(user_comms_helper).to receive(:get_user_input).and_return("2")
-    allow(user_comms_helper).to receive(:get_matrix_values).with(2).and_return(["2 1", "2 1"])
+  it 'should parse the matrix' do
+    allow(user_comms_helper).to receive(:get_matrix_size).and_return(2)
+    allow(user_comms_helper).to receive(:get_matrix_values).and_return([["2", "1"], ["2", "2"]])
 
-    result = human_learning_controller.run_program
-    expect(result).to eq('5')
+    human_learning_controller.run_program
 
+    expect(parser).to have_received(:parse).with([["2", "1"], ["2", "2"]])
+  end
+
+  it 'should calculate the sum of diagonals' do
+    allow(user_comms_helper).to receive(:get_matrix_size).and_return(2)
+    allow(user_comms_helper).to receive(:get_matrix_values).and_return([["2", "1"], ["2", "2"]])
+    allow(parser).to receive(:parse).and_return([[2, 1], [2, 2]])
+
+    human_learning_controller.run_program
+
+    expect(calculator).to have_received(:calculate_sum).with([[2, 1], [2, 2]])
+  end
+
+  it 'should output the result and say thank you to user' do
+    allow(user_comms_helper).to receive(:get_matrix_size).and_return(2)
+    allow(user_comms_helper).to receive(:get_matrix_values).and_return([["2", "1"], ["2", "2"]])
+    allow(parser).to receive(:parse).and_return([[2, 1], [2, 2]])
+    allow(calculator).to receive(:calculate_sum).and_return(7)
+
+    human_learning_controller.run_program
+
+    expect(user_comms_helper).to have_received(:output_result).with(7)
+    expect(user_comms_helper).to have_received(:say_thank_you)
   end
 end

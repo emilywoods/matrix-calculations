@@ -21,4 +21,33 @@ RSpec.describe 'user_comms_helper' do
     expect(STDOUT).to receive(:puts).exactly(MATRIX_SIZE_AS_INT).times
     expect(user_comms_helper.get_matrix_values(MATRIX_SIZE_AS_INT)).to eq(["2 1", "2 1"])
   end
+
+
+  it 'should display an error message when matrix size is not a number' do
+    allow(user_comms_helper).to receive(:get_matrix_size).and_return("Hello")
+
+    expect{human_learning_controller.run_program}.to raise_error(InvalidMatrixSize)
+    expect{human_learning_controller.run_program}.to raise_error.with_message(InvalidMatrixSize::INVALID_MATRIX_SIZE)
+  end
+
+  it 'should display an error message when matrix size is not an integer' do
+    allow(user_comms_helper).to receive(:get_matrix_size).and_return("6.6")
+
+    expect{human_learning_controller.run_program}.to raise_error(InvalidMatrixSize)
+    expect{human_learning_controller.run_program}.to raise_error.with_message(InvalidMatrixSize::INVALID_MATRIX_SIZE)
+  end
+
+  it 'should display an error message when matrix size is too large' do
+    allow(user_comms_helper).to receive(:get_matrix_size).and_return("11")
+
+    expect{human_learning_controller.run_program}.to raise_error(InvalidMatrixSize)
+    expect{human_learning_controller.run_program}.to raise_error.with_message(InvalidMatrixSize::INVALID_MATRIX_SIZE)
+  end
+
+  it 'should display an error message when matrix size is zero' do
+    allow(user_comms_helper).to receive(:get_matrix_size).and_return("0")
+
+    expect{human_learning_controller.run_program}.to raise_error(InvalidMatrixSize)
+    expect{human_learning_controller.run_program}.to raise_error.with_message(InvalidMatrixSize::INVALID_MATRIX_SIZE)
+  end
 end

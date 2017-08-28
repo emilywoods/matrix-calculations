@@ -10,32 +10,18 @@ class HumanLearningController
 
   def run_program
     user_comms_helper.request_matrix_size
-    matrix_size_string = user_comms_helper.get_user_input
-    matrix_size = validate_matrix_size(matrix_size_string)
+    matrix_size = user_comms_helper.get_matrix_size
 
     user_comms_helper.request_matrix_values(matrix_size)
-    matrix_string = user_comms_helper.get_matrix_values(matrix_size)
+    string_number_matrix = user_comms_helper.get_matrix_values(matrix_size)
 
-    matrix = matrix_parser.parse(matrix_size, matrix_string)
-    diagonal_sum = calculator.calculate_sum(matrix)
+    float_matrix = matrix_parser.parse(string_number_matrix)
+    diagonal_sum = calculator.calculate_sum(float_matrix)
 
     user_comms_helper.output_result(diagonal_sum)
     user_comms_helper.say_thank_you
   end
 
-  private
-  def validate_matrix_size(matrix_size_string)
-    raise InvalidMatrixSize unless matrix_size_string.match(/^(\d+)$/)
-    matrix_size = matrix_size_string.to_i
-    raise InvalidMatrixSize unless matrix_size < 11 && matrix_size > 0
-    matrix_size
-  end
 end
 
-class InvalidMatrixSize < StandardError
-  INVALID_MATRIX_SIZE = "Error: invalid matrix size. Require integer valid from 1 - 10"
-  def initialize(msg=INVALID_MATRIX_SIZE)
-    super
-  end
-end
 
