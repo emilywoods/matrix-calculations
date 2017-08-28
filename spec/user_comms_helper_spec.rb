@@ -103,5 +103,14 @@ RSpec.describe 'user_comms_helper' do
       expect(result).to eq([["1", "4"], ["1", "4"]])
     end
 
+    it 'should return a matrix of strings if input is valid and float numbers' do
+      allow(STDIN).to receive(:gets).and_return("1.1 4")
+      allow(STDOUT).to receive(:puts)
+
+      result = user_comms_helper.get_matrix_values(2)
+
+      expect(result).to eq([["1.1", "4"], ["1.1", "4"]])
+    end
+
   end
 end
