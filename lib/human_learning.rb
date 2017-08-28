@@ -5,7 +5,7 @@ require_relative 'calculator'
 
 class HumanLearning
 
-  controller = HumanLearningController.new(UserCommsHelper, MatrixParser.new, Calculator.new)
+  controller = HumanLearningController.new(UserCommsHelper, Calculator.new)
   controller.run_program
 
 end
