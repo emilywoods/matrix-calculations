@@ -1,6 +1,6 @@
-require_relative 'human_learning_controller'
-require_relative 'user_comms_helper'
-require_relative 'calculator'
+require_relative 'controller/human_learning_controller'
+require_relative 'helper/user_comms_helper'
+require_relative 'calculator/calculator'
 
 class HumanLearning
 

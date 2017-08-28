@@ -1,5 +1,5 @@
 require 'rspec'
-require './lib/human_learning_controller'
+require './lib/controller/human_learning_controller'
 
 RSpec.describe 'human_learning_controller' do
   let(:user_comms_helper) { spy('user_comms_helper') }

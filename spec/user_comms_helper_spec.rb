@@ -1,9 +1,13 @@
 require 'rspec'
-require './lib/user_comms_helper'
+require './lib/helper/user_comms_helper'
 
 RSpec.describe 'user_comms_helper' do
 
   subject(:user_comms_helper) {UserCommsHelper}
+
+  before(:each) do
+    allow(STDOUT).to receive(:puts)
+  end
 
   describe 'get_matrix_size' do
     it 'should get the matrix size from the console as an int' do
@@ -17,28 +21,24 @@ RSpec.describe 'user_comms_helper' do
 
     it 'should raise error if the size input is not a number' do
       allow(STDIN).to receive(:gets).and_return("B")
-      allow(STDOUT).to receive(:puts)
 
       expect{user_comms_helper.get_matrix_size}.to raise_error(InvalidMatrixSize)
     end
 
     it 'should raise error if the size input is not an integer' do
       allow(STDIN).to receive(:gets).and_return("4.4")
-      allow(STDOUT).to receive(:puts)
 
       expect{user_comms_helper.get_matrix_size}.to raise_error(InvalidMatrixSize)
     end
 
     it 'raise an error if the size input is less than one' do
       allow(STDIN).to receive(:gets).and_return("0")
-      allow(STDOUT).to receive(:puts)
 
       expect{user_comms_helper.get_matrix_size}.to raise_error(InvalidMatrixSize)
     end
 
     it 'raise an error if the size input is greater than ten' do
       allow(STDIN).to receive(:gets).and_return("11")
-      allow(STDOUT).to receive(:puts)
 
       expect{user_comms_helper.get_matrix_size}.to raise_error(InvalidMatrixSize)
     end
@@ -48,28 +48,24 @@ RSpec.describe 'user_comms_helper' do
 
     it 'should raise an error if the row is blank' do
       allow(STDIN).to receive(:gets).and_return(" ")
-      allow(STDOUT).to receive(:puts)
 
       expect{user_comms_helper.get_matrix_values(2)}.to raise_error(InvalidMatrixValue)
     end
 
     it 'should raise an error if the row is incomplete' do
       allow(STDIN).to receive(:gets).and_return("1")
-      allow(STDOUT).to receive(:puts)
 
       expect{user_comms_helper.get_matrix_values(2)}.to raise_error(InvalidMatrixValue)
     end
 
     it 'should raise an error if the row is too long' do
       allow(STDIN).to receive(:gets).and_return("1 1 1 1")
-      allow(STDOUT).to receive(:puts)
 
       expect{user_comms_helper.get_matrix_values(2)}.to raise_error(InvalidMatrixValue)
     end
 
     it 'should get input values once each row' do
       allow(STDIN).to receive(:gets).and_return("1 1 1")
-      allow(STDOUT).to receive(:puts)
 
       user_comms_helper.get_matrix_values(3)
 
@@ -78,7 +74,6 @@ RSpec.describe 'user_comms_helper' do
 
     it 'should output the current row to the user' do
       allow(STDIN).to receive(:gets).and_return("1 1 1")
-      allow(STDOUT).to receive(:puts)
 
       user_comms_helper.get_matrix_values(3)
 
@@ -87,7 +82,6 @@ RSpec.describe 'user_comms_helper' do
 
     it 'should retry once if a value is not a digit and raise an error if incorrect input again' do
       allow(STDIN).to receive(:gets).and_return("1 B 1")
-      allow(STDOUT).to receive(:puts)
 
       expect{user_comms_helper.get_matrix_values(3)}.to raise_error(InvalidMatrixValue)
 
@@ -96,7 +90,6 @@ RSpec.describe 'user_comms_helper' do
 
     it 'should return a matrix of strings if input is valid' do
       allow(STDIN).to receive(:gets).and_return("1 4")
-      allow(STDOUT).to receive(:puts)
 
       result = user_comms_helper.get_matrix_values(2)
 
@@ -105,7 +98,6 @@ RSpec.describe 'user_comms_helper' do
 
     it 'should return a matrix of strings if input is valid and float numbers' do
       allow(STDIN).to receive(:gets).and_return("1.1 4")
-      allow(STDOUT).to receive(:puts)
 
       result = user_comms_helper.get_matrix_values(2)
 
