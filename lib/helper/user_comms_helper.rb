@@ -12,8 +12,7 @@ class UserCommsHelper
   def self.get_matrix_size
     user_input = STDIN.gets.strip
     validated_user_input = validate_size(user_input)
-    retry_get_size unless validated_user_input
-    user_input.to_i
+    validated_user_input ? user_input.to_i : retry_get_size
   end
 
   def self.request_matrix_values(size)
@@ -26,11 +25,10 @@ class UserCommsHelper
     (0..matrix_size - 1).each do |i|
       output_current_row(i)
       user_input = STDIN.gets.strip
-      input = validate_values(user_input, matrix_size)
-      retry_get_input(matrix_size) unless input
-      matrix_string_array.push(input)
+      validated_user_input = validate_values(user_input, matrix_size)
+      row = validated_user_input ? validated_user_input : retry_get_input(matrix_size)
+      matrix_string_array.push(row)
     end
-
     matrix_string_array
   end
 
@@ -59,6 +57,7 @@ class UserCommsHelper
     user_input = STDIN.gets.strip
     validated_user_input = validate_size(user_input)
     raise InvalidMatrixSize unless validated_user_input
+    return validated_user_input
   end
 
   def self.output_current_row(row)
@@ -68,8 +67,9 @@ class UserCommsHelper
   def self.retry_get_input(matrix_size)
     STDOUT.puts VALUE_RETRY
     user_input = STDIN.gets.strip
-    input = validate_values(user_input, matrix_size)
-    raise InvalidMatrixValue unless input
+    validated_user_input = validate_values(user_input, matrix_size)
+    raise InvalidMatrixValue unless validated_user_input
+    return validated_user_input
   end
 
   def self.validate_values(row, size)
