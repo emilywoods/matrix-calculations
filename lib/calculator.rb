@@ -4,7 +4,7 @@ class Calculator
   end
 
   def calculate_sum(string_matrix)
-    convert_strings_to_floats(string_matrix)
+    matrix = convert_strings_to_floats(string_matrix)
 
     left_to_right_diagonal = matrix.map.with_index {|row, i| row[i]} .inject :+
     right_to_left_diagonal = matrix.map.with_index {|row, i| row[-i-1]} .inject :+
