@@ -1,4 +1,3 @@
-
 class Calculator
 
   def initialize
@@ -6,12 +5,12 @@ class Calculator
 
   def calculate_sum(matrix)
     matrix.length
-    first_diagonal = matrix.map.with_index {|row, i| row[i]} .inject :+
-    inverted_diagonal = matrix.map.with_index {|row, i| row[-i-1]} .inject :+
+    left_to_right_diagonal = matrix.map.with_index {|row, i| row[i]} .inject :+
+    right_to_left_diagonal = matrix.map.with_index {|row, i| row[-i-1]} .inject :+
 
     midpoint = (!matrix.length.even? ? find_midpoint(matrix) : 0)
 
-    first_diagonal + inverted_diagonal - midpoint
+    left_to_right_diagonal + right_to_left_diagonal - midpoint
   end
 
   def find_midpoint(matrix)
