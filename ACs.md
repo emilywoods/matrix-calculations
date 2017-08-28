@@ -1,6 +1,6 @@
 **Scenario: input matrix size is not a positive integer**   
 When the user inputs the NxN matrix size    
-And the value is not a positive integer 
+And the value is not a positive integer between 1 - 10 (incl.)
 Then an error message is displayed  
 And the user can retry  
 And an error is raised if unsuccessful retry

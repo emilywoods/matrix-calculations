@@ -86,12 +86,20 @@ RSpec.describe 'user_comms_helper' do
       expect(STDOUT).to have_received(:puts).with(user_comms_helper::VALUE_RETRY)
     end
 
+    it 'should return a matrix of strings if input is negative and valid' do
+      allow(STDIN).to receive(:gets).and_return('-1')
+
+      result = user_comms_helper.get_matrix_values(1)
+
+      expect(result).to eq([['-1']])
+    end
+
     it 'should return a matrix of strings if input is valid' do
       allow(STDIN).to receive(:gets).and_return('1 4')
 
       result = user_comms_helper.get_matrix_values(2)
 
-      expect(result).to eq([%w(1 4), %w(1 4)])
+      expect(result).to eq([['1', '4'], ['1', '4']])
     end
 
     it 'should return a matrix of strings if input is valid and float numbers' do
